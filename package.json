@@ -1,0 +1,19 @@
+{
+  "name": "eternalechoes",
+  "version": "1.0.0",
+  "description": "WebGL game for Vedal's Neuro-sama Game Jam 2",
+  "main": "index.js",
+  "devDependencies": {
+    "parcel": "^2.13.3"
+  },
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "pixi.js": "^8.6.6"
+  }
+}
