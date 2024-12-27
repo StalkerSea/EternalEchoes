@@ -2,13 +2,19 @@
   "name": "eternalechoes",
   "version": "1.0.0",
   "description": "WebGL game for Vedal's Neuro-sama Game Jam 2",
-  "main": "index.js",
+  "main": "src/index.js",
   "devDependencies": {
-    "parcel": "^2.13.3"
+    "clean-webpack-plugin": "^4.0.0",
+    "html-webpack-plugin": "^5.6.3",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
   },
   "scripts": {
-    "start": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
