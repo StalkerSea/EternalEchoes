@@ -1,0 +1,33 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: dimgray;
+}
+
+.canvas-container {
+    position: relative;
+}
+
+canvas {
+    display: block;
+}
+
+.button {
+    position: absolute;
+    bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &.next-button {
+        right: 20px;
+    }
+
+    &.previous-button {
+        left: 20px;
+    }
+}
