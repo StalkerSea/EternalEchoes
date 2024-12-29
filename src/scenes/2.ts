@@ -1,31 +1,60 @@
-import { Application, Assets, Sprite, Text } from 'pixi.js';
-import scene2Image from '../../assets/scenes/2.png';
-import { createOptionWithText } from '../reusableAssets';
+import { Application, Assets, Sprite, Text, TextStyle } from "pixi.js";
+import { bloodyStyle } from "../helpers/reusableAssets";
+import { fadeInImage } from "../helpers/transitions";
+import slash from "../../assets/sounds/slash.mp3";
+import scene2 from "../../assets/scenes/2.png";
 
 export const initializeScene2 = async (app: Application) => {
-    // Load the scene 2 texture.
-    const scene2Texture = await Assets.load(scene2Image);
-    
-    // Create a new Sprite from an image path.
-    const scene2: Sprite = new Sprite(scene2Texture);
+  console.log("Initializing Scene 2");
+  console.log("scene: ", window.scene);
+  const slashSound = new Audio(slash);
+  slashSound.play();
 
-    // Scale the sprite.
-    //scene2.scale.set(0.75);
+  await Assets.load(scene2);
+  const scene2Image = Sprite.from(scene2);
+  scene2Image.width = app.screen.width;
+  scene2Image.height = app.screen.height;
+  app.stage.addChild(scene2Image);
+  fadeInImage(scene2Image, 500);
 
-    // Add to stage.
-    app.stage.addChild(scene2);
+  // Create glitch overlay using the same scene
+  const glitchOverlay = Sprite.from(scene2);
+  glitchOverlay.width = app.screen.width;
+  glitchOverlay.height = app.screen.height;
+  glitchOverlay.visible = false;
+  glitchOverlay.tint = 0xff0000; // Red tint for variation
+  app.stage.addChild(glitchOverlay);
 
-    // Center the sprite's anchor point.
-    //scene2.anchor.set(1, 0.5);
+  let glitchCount = 0;
+  const glitchInterval = setInterval(() => {
+    glitchCount++;
 
-    // Move the sprite to the center of the screen.
-    //scene2.x = app.screen.width / 2;
-    //scene2.y = app.screen.height / 2;
+    scene2Image.tint = 0x00ff00;
+    scene2Image.alpha = 0.75 + glitchCount * 0.01; // Gradually increase opacity
+    scene2Image.position.x += Math.random() * 10 - 5;
+    scene2Image.position.y += Math.random() * 10 - 5;
 
-    // Add an animation loop callback to the application's ticker.
-    /*app.ticker.add((ticker) => {
-        scene2.rotation += 0.1 * ticker.deltaTime;
-    });*/
+    if (glitchCount % 2 === 0) {
+      glitchOverlay.visible = true;
+      glitchOverlay.position.x = Math.random() * 20 - 10;
+      glitchOverlay.position.y = Math.random() * 20 - 10;
+    }
 
-    createOptionWithText({ stage: app.stage, text: 'Investigar', x: 200, y: 60 });
+    setTimeout(() => {
+      scene2Image.tint = 0xffffff;
+      scene2Image.position.x = 0;
+      scene2Image.position.y = 0;
+      glitchOverlay.visible = false;
+    }, 50);
+  }, 200);
+
+  // After glitch effect ends, ensure scene2 is displayed properly
+  setTimeout(() => {
+    clearInterval(glitchInterval);
+    scene2Image.tint = 0xffffff;
+    scene2Image.alpha = 1;
+    scene2Image.position.set(0);
+    app.stage.removeChild(glitchOverlay);
+  }, 2000);
+  window.scene = 2;
 };
