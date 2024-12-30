@@ -2,17 +2,17 @@
 import { Application, Assets, Sprite, Text } from "pixi.js";
 import { fadeOut, fadeIn } from "../helpers/transitions";
 import scene1Image from "../../assets/scenes/1.png";
-import { initializeScene } from "..";
 import {
   bloodyStyle,
-  normalStyleBlack,
   createText,
+  normalStyleWhite,
 } from "../helpers/reusableAssets";
+import { initializeScene } from "../helpers/reusableFunctions";
 
 export const initializeScene1 = async (app: Application) => {
   app.stage.removeChildren();
   const basicText = new Text({
-    text: "The weak ones always choose the wrong side on the war",
+    text: "Just the weak ones choose the wrong side of the war",
     style: bloodyStyle,
   });
 
@@ -22,7 +22,7 @@ export const initializeScene1 = async (app: Application) => {
   basicText.y = app.screen.height / 2;
   app.stage.addChild(basicText);
 
-  // Wait for 500ms before proceeding
+  // Wait for 2000ms before proceeding
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   // Fade out current scene
@@ -36,11 +36,10 @@ export const initializeScene1 = async (app: Application) => {
   app.stage.addChild(scene1);
 
   const text = createText({
-    app: app,
     text: "We always choose the good side",
     x: app.screen.width / 2,
     y: app.screen.height / 2,
-    style: normalStyleBlack,
+    style: normalStyleWhite,
     anchor: 0.5,
   });
   app.stage.addChild(await text);
@@ -59,7 +58,6 @@ export const initializeScene1 = async (app: Application) => {
   } else {
     window.scene++;
   }
-  console.log("Next scene: ", window.scene);
   let nextSceneNumber = window.scene;
 
   // Initialize the next scene

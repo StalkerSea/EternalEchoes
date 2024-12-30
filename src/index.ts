@@ -1,12 +1,12 @@
 import { Application } from "pixi.js";
 import "./styles.scss";
-import { initializeScene1 } from "./scenes/1";
-import { initializeScene2 } from "./scenes/2";
+import { addButtons, initializeScene } from "./helpers/reusableFunctions";
 
 declare global {
   interface Window {
     pixiApp?: Application;
     scene?: number;
+    choices: Array<boolean>;
   }
 }
 
@@ -17,22 +17,6 @@ declare const module: {
   };
 };
 
-export const initializeScene = async (
-  app: Application,
-  sceneNumber: number
-) => {
-  switch (sceneNumber) {
-    case 1:
-      await initializeScene1(app);
-      break;
-    case 2:
-      await initializeScene2(app);
-      break;
-    default:
-      console.error(`Scene ${sceneNumber} not found`);
-  }
-};
-
 // Create a PixiJS application.
 const app: Application = new Application();
 
@@ -40,6 +24,9 @@ const app: Application = new Application();
 const initializeApp = async () => {
   // Store the application instance in the global window object
   window.pixiApp = app;
+
+  // Pre-set all the choices to false
+  window.choices = new Array(2).fill(false);
 
   // Initialize the application.
   await app.init({ background: "#000000", width: 1280, height: 720 });
@@ -53,34 +40,9 @@ const initializeApp = async () => {
   container.appendChild(app.canvas);
 
   // Initialize Scene 1
-  await initializeScene(app, 1);
   window.scene = 1;
-
-  // Create a button to transition to the next scene
-  const nextButton = document.createElement("button");
-  nextButton.innerText = "Next";
-  nextButton.className = "button next-button";
-  container.appendChild(nextButton);
-
-  // Create a button to transition to the previous scene
-  const previousButton = document.createElement("button");
-  previousButton.innerText = "Previous";
-  previousButton.className = "button previous-button";
-  container.appendChild(previousButton);
-
-  nextButton.addEventListener("click", async () => {
-    // Initialize next scene
-    let nextSceneNumber = (window.scene || 1) + 1;
-    await initializeScene(app, nextSceneNumber);
-    window.scene = (window.scene || 1) + 1;
-  });
-
-  previousButton.addEventListener("click", async () => {
-    // Initialize Scene 1
-    let nextSceneNumber = (window.scene || 2) - 1;
-    await initializeScene(app, nextSceneNumber);
-    window.scene = (window.scene || 2) - 1;
-  });
+  await initializeScene(app, window.scene);
+  // addButtons(app, container, 7);
 };
 
 // Create a button to start the application
@@ -91,7 +53,9 @@ document.body.appendChild(startButton);
 
 startButton.addEventListener("click", async () => {
   // Remove the start button
-  startButton.remove();
+  document
+    .querySelectorAll(".button.start-button")
+    .forEach((button) => button.remove());
 
   // Initialize the application
   await initializeApp();
