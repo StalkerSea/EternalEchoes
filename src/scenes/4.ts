@@ -2,6 +2,7 @@ import { Application, Assets, Sprite } from "pixi.js";
 import {
   createDecision,
   createText,
+  decisionStyleBlack,
   smallDecisionStyle,
 } from "../helpers/reusableAssets";
 import a from "../../assets/scenes/4.png";
@@ -59,10 +60,10 @@ const loadSceneB = async (app: Application) => {
   app.stage.addChild(text);
   const decision1 = await createDecision({
     stage: app.stage,
-    text: "Investigate further about the memories",
+    text: "Investigate further\nabout the memories",
     x: app.canvas.width / 8,
     y: (app.canvas.height / 3) * 2,
-    style: smallDecisionStyle,
+    style: decisionStyleBlack,
     action: () => {
       if (!window.choices) {
         window.choices = new Array<boolean>(2).fill(false);
@@ -73,10 +74,10 @@ const loadSceneB = async (app: Application) => {
   });
   const decision2 = await createDecision({
     stage: app.stage,
-    text: "Ignore the memories and move on",
+    text: "Ignore the memories\n and move on",
     x: app.canvas.width / 3,
     y: (app.canvas.height / 3) * 2,
-    style: smallDecisionStyle,
+    style: decisionStyleBlack,
     action: () => {
       initializeScene(app, 5);
     },

@@ -11,6 +11,7 @@ import {
   fadeInElement,
   fadeOut,
   fadeOutElement,
+  fadeOutSound,
 } from "../helpers/transitions";
 
 export const initializeScene7 = async (app: Application) => {
@@ -25,6 +26,9 @@ export const initializeScene7 = async (app: Application) => {
   });
   app.stage.addChild(text);
   fadeInElement(text, 500);
+  if (window.bgmSound) {
+    fadeOutSound(window.bgmSound, 7500);
+  }
   /*await fadeOut(app, 50);
   await Assets.load(scene7);
   const scene7Image = Sprite.from(scene7);

@@ -1,12 +1,14 @@
 import { Application } from "pixi.js";
 import "./styles.scss";
 import { addButtons, initializeScene } from "./helpers/reusableFunctions";
+import bgm from "../assets/sounds/Lonely Heart.mp3";
 
 declare global {
   interface Window {
     pixiApp?: Application;
     scene?: number;
     choices: Array<boolean>;
+    bgmSound?: HTMLAudioElement;
   }
 }
 
@@ -38,6 +40,11 @@ const initializeApp = async () => {
 
   // Then adding the application's canvas to the container.
   container.appendChild(app.canvas);
+
+  // Start the bgm
+  const bgmSound = new Audio(bgm);
+  bgmSound.play();
+  window.bgmSound = bgmSound;
 
   // Initialize Scene 1
   window.scene = 1;

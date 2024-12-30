@@ -127,3 +127,22 @@ export const fadeInElement = async (
     await new Promise((resolve) => setTimeout(resolve, duration / fadeSteps));
   }
 };
+
+export const fadeOutSound = (sound: HTMLAudioElement, duration: number) => {
+  return new Promise<void>((resolve) => {
+    const startVolume = sound.volume;
+    const start = performance.now();
+    const fade = () => {
+      const elapsed = performance.now() - start;
+      const progress = Math.min(elapsed / duration, 1);
+      sound.volume = startVolume * (1 - progress);
+      if (progress < 1) {
+        requestAnimationFrame(fade);
+      } else {
+        sound.pause();
+        resolve();
+      }
+    };
+    fade();
+  });
+};

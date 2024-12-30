@@ -16,7 +16,7 @@ export const decisionStyleBlack = new TextStyle({
   fill: 0x000000,
   align: "center",
   wordWrap: true,
-  wordWrapWidth: 200,
+  wordWrapWidth: 250,
 });
 
 export const decisionStyleWhite = new TextStyle({
