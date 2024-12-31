@@ -1,0 +1,3 @@
+- Add a pause button
+- Add an option for slower/normal/faster dialogue
+- Finish scene 7
