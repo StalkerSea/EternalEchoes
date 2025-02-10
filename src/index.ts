@@ -47,7 +47,7 @@ const initializeApp = async () => {
   window.bgmSound = bgmSound;
 
   // Initialize Scene 1
-  window.scene = 1;
+  window.scene = 7;
   await initializeScene(app, window.scene);
   // addButtons(app, container, 7);
 };

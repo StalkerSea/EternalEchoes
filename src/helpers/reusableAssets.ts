@@ -27,7 +27,6 @@ export const decisionStyleWhite = new TextStyle({
 });
 
 interface DecisionConfig {
-  stage: Container;
   text: string;
   x: number;
   y: number;
@@ -105,7 +104,27 @@ export const longerTextBloodyStyle = new TextStyle({
   wordWrapWidth: 750,
 });
 
-export const createText = async ({
+export const longerTextWhiteStyle = new TextStyle({
+  fontFamily: "Jolly Lodger",
+  fontSize: 36,
+  fill: "white",
+  dropShadow: textShadow,
+  align: "center",
+  wordWrap: true,
+  wordWrapWidth: 750,
+});
+
+export const longerTextBlackStyle = new TextStyle({
+  fontFamily: "Jolly Lodger",
+  fontSize: 36,
+  fill: "black",
+  dropShadow: textShadow,
+  align: "center",
+  wordWrap: true,
+  wordWrapWidth: 750,
+});
+
+export const createTextContainer = async ({
   text,
   x,
   y,
@@ -163,6 +182,34 @@ export const createText = async ({
   }
 
   return bTextContainer;
+};
+
+export const createText = ({
+  text,
+  x,
+  y,
+  style,
+  anchor,
+}: {
+  text: string;
+  x: number;
+  y: number;
+  style?: TextStyle;
+  anchor?: number;
+}): Text => {
+  // Create a Text object using the decision style
+  const basicText: Text = new Text({
+    text: text,
+    style: style || normalStyleWhite,
+  });
+  basicText.x = x;
+  basicText.y = y;
+
+  if (anchor) {
+    basicText.anchor.set(anchor);
+  }
+
+  return basicText;
 };
 
 export const createDecision = async ({

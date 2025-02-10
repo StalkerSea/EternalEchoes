@@ -4,7 +4,7 @@ import { fadeOut, fadeIn } from "../helpers/transitions";
 import scene1Image from "../../assets/scenes/1.png";
 import {
   bloodyStyle,
-  createText,
+  createTextContainer,
   normalStyleWhite,
 } from "../helpers/reusableAssets";
 import { initializeScene } from "../helpers/reusableFunctions";
@@ -35,7 +35,7 @@ export const initializeScene1 = async (app: Application) => {
   const scene1: Sprite = new Sprite(scene1Texture);
   app.stage.addChild(scene1);
 
-  const text = createText({
+  const text = createTextContainer({
     text: "We always choose the good side",
     x: app.screen.width / 2,
     y: app.screen.height / 2,

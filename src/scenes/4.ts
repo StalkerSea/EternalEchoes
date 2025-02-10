@@ -1,9 +1,8 @@
 import { Application, Assets, Sprite } from "pixi.js";
 import {
   createDecision,
-  createText,
+  createTextContainer,
   decisionStyleBlack,
-  smallDecisionStyle,
 } from "../helpers/reusableAssets";
 import a from "../../assets/scenes/4.png";
 import b from "../../assets/scenes/4B.png";
@@ -26,7 +25,7 @@ const loadSceneA = async (app: Application) => {
   aImage.width = app.screen.width;
   aImage.height = app.screen.height;
   app.stage.addChild(aImage);
-  const text = await createText({
+  const text = await createTextContainer({
     text: "You'll never escape from here",
     x: app.canvas.width / 3,
     y: app.canvas.height / 2,
@@ -51,7 +50,7 @@ const loadSceneB = async (app: Application) => {
   glitch(app, b, SceneB);
   //setTimeout(() => {}, 5000);
 
-  const text = await createText({
+  const text = await createTextContainer({
     text: "How could I have human memories?",
     x: app.canvas.width / 3,
     y: app.canvas.height / 2,
@@ -59,7 +58,6 @@ const loadSceneB = async (app: Application) => {
   });
   app.stage.addChild(text);
   const decision1 = await createDecision({
-    stage: app.stage,
     text: "Investigate further\nabout the memories",
     x: app.canvas.width / 8,
     y: (app.canvas.height / 3) * 2,
@@ -73,7 +71,6 @@ const loadSceneB = async (app: Application) => {
     },
   });
   const decision2 = await createDecision({
-    stage: app.stage,
     text: "Ignore the memories\n and move on",
     x: app.canvas.width / 3,
     y: (app.canvas.height / 3) * 2,

@@ -1,7 +1,7 @@
 import { Application, Assets, Sprite } from "pixi.js";
 import {
   createDecision,
-  createText,
+  createTextContainer,
   longerTextBloodyStyle,
   longTextStyle,
   smallTextStyle,
@@ -25,7 +25,7 @@ export const initializeScene5 = async (app: Application) => {
   scene5Image.height = app.screen.height;
   app.stage.addChild(scene5Image);
 
-  const part1 = await createText({
+  const part1 = await createTextContainer({
     text: "My name is Kimiko. I am an onna-bugeisha\nfighting in the civil war of 1467 in Japan.",
     x: app.canvas.width / 3,
     y: app.canvas.height / 2,
@@ -37,7 +37,7 @@ export const initializeScene5 = async (app: Application) => {
   await new Promise((resolve) => setTimeout(resolve, 2500));
   await fadeOutElement(part1, 1000);
 
-  const part2 = await createText({
+  const part2 = await createTextContainer({
     text: "My destiny depends on my choice,\nI need to think carefully.",
     x: app.canvas.width / 3,
     y: app.canvas.height / 2,
@@ -48,14 +48,12 @@ export const initializeScene5 = async (app: Application) => {
   app.stage.addChild(part2);
 
   const decision1 = await createDecision({
-    stage: app.stage,
     text: "Run away\nfrom the war",
     x: app.canvas.width / 8,
     y: (app.canvas.height / 3) * 2,
     action: () => die(app, 1),
   });
   const decision2 = await createDecision({
-    stage: app.stage,
     text: "Join the war\nand fight",
     x: app.canvas.width / 3,
     y: (app.canvas.height / 3) * 2,
@@ -76,7 +74,7 @@ const die = async (app: Application, choice: number) => {
   }
   await fadeOut(app, 500);
   app.stage.removeChildren();
-  const dieText = await createText({
+  const dieText = await createTextContainer({
     text: dieTextBase,
     x: app.canvas.width / 2,
     y: app.canvas.height / 2,
@@ -89,7 +87,7 @@ const die = async (app: Application, choice: number) => {
   await new Promise((resolve) => setTimeout(resolve, 2500));
   await fadeOutElement(dieText, 1000);
 
-  const next = await createText({
+  const next = await createTextContainer({
     text: "The cycle started here...",
     x: app.canvas.width / 2,
     y: app.canvas.height / 2,
@@ -102,7 +100,7 @@ const die = async (app: Application, choice: number) => {
   await new Promise((resolve) => setTimeout(resolve, 1500));
   await fadeOutElement(next, 1000);
 
-  const next2 = await createText({
+  const next2 = await createTextContainer({
     text: "Will you break it?",
     x: app.canvas.width / 2,
     y: app.canvas.height / 2,

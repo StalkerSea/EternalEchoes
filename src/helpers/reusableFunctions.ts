@@ -1,5 +1,11 @@
 import { Application } from "pixi.js";
-import { fadeOut, fadeIn } from "./transitions";
+import {
+  fadeOut,
+  fadeIn,
+  fadeInElement,
+  fadeOutSound,
+  fadeOutElement,
+} from "./transitions";
 import { initializeScene1 } from "../scenes/1";
 import { initializeScene2 } from "../scenes/2";
 import { initializeScene3 } from "../scenes/3";
@@ -7,6 +13,12 @@ import { initializeScene4 } from "../scenes/4";
 import { initializeScene5 } from "../scenes/5";
 import { initializeScene6 } from "../scenes/6";
 import { initializeScene7 } from "../scenes/7";
+import {
+  createText,
+  createTextContainer,
+  longerTextBloodyStyle,
+  longTextStyle,
+} from "./reusableAssets";
 
 export const initializeScene = async (
   app: Application,
@@ -106,4 +118,95 @@ export const addButtons = (
       console.error("Scene number is undefined");
     }
   });
+};
+
+export async function end(app: Application) {
+  const text = await createTextContainer({
+    text: "What is this... \nWas I actually human..?\n\nEND\n(currently in development, first game!).",
+    x: app.canvas.width / 2,
+    y: app.canvas.height / 2,
+    anchor: 0.5,
+    style: longerTextBloodyStyle,
+    removeBg: true,
+  });
+  app.stage.addChild(text);
+  fadeInElement(text, 500);
+  if (window.bgmSound) {
+    fadeOutSound(window.bgmSound, 7500);
+  }
+}
+
+export const addTimer = (
+  app: Application,
+  seconds: number,
+  onComplete: () => void,
+  blink: boolean = true,
+  fade: boolean = false
+) => {
+  const formatTime = (time: number): string => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    const milliseconds = Math.floor((time % 1) * 1000);
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")} ${milliseconds.toString().padStart(3, "0")}`;
+  };
+
+  const timerText = createText({
+    text: formatTime(seconds),
+    x: app.canvas.width / 2,
+    y: 50,
+    anchor: 0.5,
+    style: longTextStyle,
+  });
+
+  app.stage.addChild(timerText);
+  let timeLeft = seconds;
+  let isBlinking = false;
+  let visible = true;
+  let blinkInterval: NodeJS.Timeout | null = null;
+
+  const startBlinking = () => {
+    if (blink && !isBlinking) {
+      isBlinking = true;
+      blinkInterval = setInterval(() => {
+        timerText.visible = visible = !visible;
+      }, 1000);
+    }
+  };
+
+  const tickerFunction = () => {
+    timeLeft -= app.ticker.deltaTime / 60;
+    const currentTime = Math.max(0, timeLeft);
+    timerText.text = formatTime(currentTime);
+
+    if (currentTime <= 0) {
+      startBlinking();
+      if (fade) {
+        fadeOutElement(timerText, 3000).then(() => {
+          if (blinkInterval) clearInterval(blinkInterval);
+          app.ticker.remove(tickerFunction);
+          app.stage.removeChild(timerText);
+          onComplete();
+        });
+      } else {
+        setTimeout(() => {
+          if (blinkInterval) clearInterval(blinkInterval);
+          app.ticker.remove(tickerFunction);
+          onComplete();
+        }, 3000);
+      }
+    }
+  };
+  app.ticker.add(tickerFunction);
+  return {
+    stop: () => {
+      app.ticker.remove(tickerFunction);
+      startBlinking();
+      setTimeout(() => {
+        if (blinkInterval) clearInterval(blinkInterval);
+        app.stage.removeChild(timerText);
+      }, 3000);
+    },
+  };
 };
